@@ -1,180 +1,108 @@
-<div class="oranda-hide">
+## intro2 : 
+Error : We need an argument in println whose value will be printed instead of {}
+Fix : declare a string and add it as an argument to println
 
-# rustlings 🦀❤️
+## var6 : 
+Error : No type was giving to const. consts must always have types when declared
+Fix : add a valid type for example ":i32" after NUMBER
 
-</div>
+## function5 : 
+Error : the function square isnt returning anything since the last line is a statement.
+Fix : In rust we can return a value by removing ";" at the end or explicitly typing return. No ; is cool so we will use that
 
-Greetings and welcome to `rustlings`. This project contains small exercises to get you used to reading and writing Rust code. This includes reading and responding to compiler messages!
+## if3 : 
+Error : the problem here is that the ifs have different return value types. They should be the same.
+Fix : Since to get the habitat we use int (1,2,3) we will set all ifs to return an int so we change the second if from 2.0 (float) to 2 and the last else statement from "Unknown" (string) to just any number other than 1 2 or 3 and it will return "Unknown as the habitat"
 
-_...looking for the old, web-based version of Rustlings? Try [here](https://github.com/rust-lang/rustlings/tree/rustlings-1)_
+## quiz1.rs :
+We need to make a function that takes as an argument the number of apples and calculates the price. In the exercise instructions, it says that the price of an apple is 2 but if the number of apples is more than 40 the price of each apple becomes 1. We also see in test that if the number is exactly 40 the price for each apple is still 2 so we need to take that into account in our price calculation.
 
-Alternatively, for a first-time Rust learner, there are several other resources:
+## primitive_types6 : 
+Error : we need to get the second element of the tuple numbers in the var second by destructuring the tuple
+Fix : we will use numbers.index_that_we_want so here we want the second number so we will use the index 1
 
-- [The Book](https://doc.rust-lang.org/book/index.html) - The most comprehensive resource for learning Rust, but a bit theoretical sometimes. You will be using this along with Rustlings!
-- [Rust By Example](https://doc.rust-lang.org/rust-by-example/index.html) - Learn Rust by solving little exercises! It's almost like `rustlings`, but online
+## vecs2 :
+in the first function we need to take ownership of element and then change its value (dereference using *) the second function just needs the result and it will be returned as a new member
 
-## Getting Started
+## move_semantics6 : 
+First error : the problem here is that we have a string in data, when we pass it to get_char function, data will be moved and wont be able to be used in string_uppercase. But since the instructions limit us to only adding or removing references we will use & instead
+Fix : we need to give get_char a reference to data so that we keep ownership of data and then we can use it in string_uppercase. we will also need to add referencing in fn get_char
+Second error : to_uppercase() creates a temporary value, the function returns a new string that we then reference. Which means the new string isnt stored anywhere.
+fix : remove referencing in the string_uppercase function
 
-_Note: If you're on MacOS, make sure you've installed Xcode and its developer tools by typing `xcode-select --install`._
-_Note: If you're on Linux, make sure you've installed gcc. Deb: `sudo apt install gcc`. Yum: `sudo yum -y install gcc`._
+## structs3: 
+Error : we need to code the is_international and get_fees functions.
+Fix : is_internation will compare the Package.sender_country and Package.recipient_country. If they are different then it will return true. So we edit the return value to be a bool and we do a comparison. 
+For get_fees it takes as a parameter self and cents_per_gram. So first, obviously the return value will be a number so we will go with u32 as the return type and then for the logic we will just return the multiplication of the cents_per_gram that we passed with Package.weight_in_grams.
 
-You will need to have Rust installed. You can get it by visiting <https://rustup.rs>. This'll also install Cargo, Rust's package/project manager.
+## enums3 : 
+Errors : We need to fill Message enum based on the values used in the test so : changecolor, Echo, Move and Quit. Once that is done we need to fix the state.process of Message::ChangeColor there is a pair of () missing and finally as the code says we need to do a match in the process fn
+Fix : First fill Message enum with the correct types, add the () in the test and do the match that will call the other functions defined just before 
 
-## MacOS/Linux
+## strings4 : 
+Error : we need to put either string_slice() or string() before each line in the code. The goal here is to known if the line is of type &str then we need string_slice() or of type String then we will put string()
+Fix : We need to read the documentation for the functions used here or wecan just hack through it thanks to the compiler. It will tell us if the line is of type &str or String. If everything is correct, the code will compile with no problems.
 
-Just run:
+## modules3 : 
+Error : we are missing a module that has SystemTime and UNIX_EPOCH const so we need to import them in use
+Fix : after a simple google search, SystemTime is in std::time so we will just add it in the use.
 
-```bash
-curl -L https://raw.githubusercontent.com/rust-lang/rustlings/main/install.sh | bash
-```
+## hasmaps3: 
+So we have a hashmap scores that has team names as a keys and Team struct as values for those keys. We will use the Entry API and its methods to populate "scores".
 
-Or if you want it to be installed to a different path:
+first we will pass a team name clone (to not loose ownership) to the entry() method. This can go 2 ways : 
 
-```bash
-curl -L https://raw.githubusercontent.com/rust-lang/rustlings/main/install.sh | bash -s mypath/
-```
+If there is an entry with the team name that we passed as a key,we will use and_modify() to modify the value associated to the key in our case here it will be the Team structure for "team_name" which consists of goals scored and goals conceded. The modification in itself is : we will add the team_X_score that we got from results to the existing goals scored of team X and the goals of team Y to team X's goals conceded. 
 
-This will install Rustlings and give you access to the `rustlings` command. Run it to get started!
+If there is no entry with the team name, we will just insert it in scores and create the Team score with goals scored and goals conceded (based from results just like in and_modify) as a value for that team name in scores.
 
-### Nix
+Tahts for the first team, we just need to do it the other way around for the second team. 
 
-Basically: Clone the repository at the latest tag, finally run `nix develop` or `nix-shell`.
+In other words, we will add team_Y_score as goals scored and team_X_score as as goals conceded for team Y.
 
-```bash
-# find out the latest version at https://github.com/rust-lang/rustlings/releases/latest (on edit 5.6.1)
-git clone -b 5.6.1 --depth 1 https://github.com/rust-lang/rustlings
-cd rustlings
-# if nix version > 2.3
-nix develop
-# if nix version <= 2.3
-nix-shell
-```
 
-## Windows
 
-In PowerShell (Run as Administrator), set `ExecutionPolicy` to `RemoteSigned`:
+## quiz2.rs : 
+from the test, we see that transformer() function takes a Vec of tuples as an argument so that will be the type of input in transformer().
+The tuples are a string and the enum Command that is declared at the top.
+again from the tests, we can see that the output will be a Vec of String so that will be the type of output.
+for the use needed to import transformer we will need to reach to the top of the file out of test so we will use super. transformer is in my_mlodule so we will access it from there and the end use looks like this : 
+use super::my_module::transformer;
 
-```ps1
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-```
+now for the for loop in transformer, it destructures the input into string and command. We will do just like what we did previously in the exercices where will match command and go through the elements we declared in enum Command.
 
-Then, you can run:
+So for Uppercase, we will just use to_uppercase() on the string. This will indeed return a type String. Then we will just push the value to the output vec.
 
-```ps1
-Start-BitsTransfer -Source https://raw.githubusercontent.com/rust-lang/rustlings/main/install.ps1 -Destination $env:TMP/install_rustlings.ps1; Unblock-File $env:TMP/install_rustlings.ps1; Invoke-Expression $env:TMP/install_rustlings.ps1
-```
+for Trim, same thing , we will use .trim() on the string but since the return type is &str and we need a String, we will add the .to_string() before we push it to output.
 
-To install Rustlings. Same as on MacOS/Linux, you will have access to the `rustlings` command after it. Keep in mind that this works best in PowerShell, and any other terminals may give you errors.
+for Append,it takes num as an argument which is the number of "bar" that we will append to the string. We saw it in the exercises as well so we will use format! macro to append bar to the string and use .repeat() for the num bars we will need to add.
 
-If you get a permission denied message, you might have to exclude the directory where you cloned Rustlings in your antivirus.
 
-## Browser
+## options3 :
+as the compiler says, we use y after a partial move and p doesnt implement Copy so we need to use a ref instead of plain p. Thats why we add ref.
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/rust-lang/rustlings)
+## errors6:
+--
 
-[![Open Rustlings On Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new/?repo=rust-lang%2Frustlings&ref=main)
+## genereic2:
+here we can only store u32 in the wrapper. If we try to store another type it won't work. That is what the exercise wants us to change.To be able to store any type, we will edit the struct Wrapper ti have a generic type, the value in the struct will also be of a generic type. we need to also specify this in the impl.
 
-## Manually
+## traits5 : 
+the exercise wants us to replace ?? with whats needed and only change that line. The goal here is to make sure that "item" implements both SomeTrait and OtherTrait so that we can use the some_function and other_function on item. We will do the same as we saw in the exercises and make sure item implements both traits.
 
-Basically: Clone the repository at the latest tag, run `cargo install --path .`.
+## quiz3:
+we need to set the grade in ReportCard struct to be a generic type so that for Gary Plotter we can print A+ as his grade.
+We change the type of grade to a generic. Declare that the struct takes a generic and edit the impl to have the generic as well. Problem is the compiler will hit with an error where we cant print format strings with the generic type so we need to restrict the generic type in the implementation to implement std::fmt::Display.
 
-```bash
-# find out the latest version at https://github.com/rust-lang/rustlings/releases/latest (on edit 5.6.1)
-git clone -b 5.6.1 --depth 1 https://github.com/rust-lang/rustlings
-cd rustlings
-cargo install --force --path .
-```
+## lifetime3 :
+we need to add lifetime just like what we did in the previous exercices to the Book struct
 
-If there are installation errors, ensure that your toolchain is up to date. For the latest, run:
+## tests4 : 
+we replace ??? with the correct value rect.width and rect.height to have the test check if the program panics in those cases we add #[should_panic]
 
-```bash
-rustup update
-```
+## iterators5 :
+for count_iterator() we iterate through the hashmap, we filter to get only the values that we want and we use .count() to count the result
+for count_collection_iterator() we iterate through the collection. We use map() to get each hashmap in the collection. We use a closure and call count_iterator to count for each hashmap and sum the total.
 
-Then, same as above, run `rustlings` to get started.
 
-## Doing exercises
 
-The exercises are sorted by topic and can be found in the subdirectory `rustlings/exercises/<topic>`. For every topic there is an additional README file with some resources to get you started on the topic. We really recommend that you have a look at them before you start.
-
-The task is simple. Most exercises contain an error that keeps them from compiling, and it's up to you to fix it! Some exercises are also run as tests, but rustlings handles them all the same. To run the exercises in the recommended order, execute:
-
-```bash
-rustlings watch
-```
-
-This will try to verify the completion of every exercise in a predetermined order (what we think is best for newcomers). It will also rerun automatically every time you change a file in the `exercises/` directory. If you want to only run it once, you can use:
-
-```bash
-rustlings verify
-```
-
-This will do the same as watch, but it'll quit after running.
-
-In case you want to go by your own order, or want to only verify a single exercise, you can run:
-
-```bash
-rustlings run myExercise1
-```
-
-Or simply use the following command to run the next unsolved exercise in the course:
-
-```bash
-rustlings run next
-```
-
-In case you get stuck, you can run the following command to get a hint for your
-exercise:
-
-```bash
-rustlings hint myExercise1
-```
-
-You can also get the hint for the next unsolved exercise with the following command:
-
-```bash
-rustlings hint next
-```
-
-To check your progress, you can run the following command:
-
-```bash
-rustlings list
-```
-
-## Testing yourself
-
-After every couple of sections, there will be a quiz that'll test your knowledge on a bunch of sections at once. These quizzes are found in `exercises/quizN.rs`.
-
-## Enabling `rust-analyzer`
-
-Run the command `rustlings lsp` which will generate a `rust-project.json` at the root of the project, this allows [rust-analyzer](https://rust-analyzer.github.io/) to parse each exercise.
-
-## Continuing On
-
-Once you've completed Rustlings, put your new knowledge to good use! Continue practicing your Rust skills by building your own projects, contributing to Rustlings, or finding other open-source projects to contribute to.
-
-## Uninstalling Rustlings
-
-If you want to remove Rustlings from your system, there are two steps. First, you'll need to remove the exercises folder that the install script created
-for you:
-
-```bash
-rm -rf rustlings # or your custom folder name, if you chose and or renamed it
-```
-
-Second, run `cargo uninstall` to remove the `rustlings` binary:
-
-```bash
-cargo uninstall rustlings
-```
-
-Now you should be done!
-
-## Contributing
-
-See [CONTRIBUTING.md](https://github.com/rust-lang/rustlings/blob/main/CONTRIBUTING.md).
-
-## Contributors ✨
-
-Thanks goes to the wonderful people listed in [AUTHORS.md](https://github.com/rust-lang/rustlings/blob/main/AUTHORS.md) 🎉
